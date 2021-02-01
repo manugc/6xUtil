@@ -46,6 +46,7 @@ Global Const $fileConfig = @ScriptDir & "\config.ini"
 Global Const $vDevelop = "[REGEXPTITLE:(Velneo vDevelop.*)]"
 Global Const $ventanaProcesos = "[REGEXPTITLE:(^Proceso.*|^Función.*)]"
 Global Const $ventanaInspectorPorColor = "INSPECTOR: Objetos por color"
+Local $ventanas = "[REGEXPTITLE:(INSPECTOR: Objetos por tipo.*|Lista de Variables:.*|^Proceso.*|^Función.*|Asistente de funciones proceso|Línea de Proceso)|(Seleccione campo de:.*)|(Asistente para edición de fórmulas)]"
 
 Global $controlFocus, $textoUltimo, $itemUltimo, $AuxNum
 Global $ventanaActiva;
@@ -88,7 +89,6 @@ EndFunc
 OnAutoItExitRegister("ExitProg")
 
 ; Buscar texto
-Local $ventanas = "[REGEXPTITLE:(INSPECTOR: Objetos por tipo.*|Lista de Variables:.*|^Proceso.*|^Función.*|Asistente de funciones proceso|Línea de Proceso)|(Seleccione campo de:.*)]"
 _HotKey_Assign(BitOR($CK_CONTROL, $VK_F ), "BuscarTexto", BitOR($HK_FLAG_DEFAULT, $HK_FLAG_EXTENDEDCALL), $ventanas)
 _HotKey_Assign($VK_F3, "BuscarTexto", BitOR($HK_FLAG_DEFAULT, $HK_FLAG_EXTENDEDCALL), $ventanas)
 
