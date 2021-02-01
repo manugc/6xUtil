@@ -3,7 +3,7 @@
 #AutoIt3Wrapper_Outfile=6x.exe
 #AutoIt3Wrapper_UseUpx=y
 #AutoIt3Wrapper_Res_Description=Extras 6x
-#AutoIt3Wrapper_Res_Fileversion=1.0.0.22
+#AutoIt3Wrapper_Res_Fileversion=1.1.0.24
 #AutoIt3Wrapper_Res_Fileversion_AutoIncrement=y
 #AutoIt3Wrapper_Res_ProductName=6x Hack
 #AutoIt3Wrapper_Res_CompanyName=Visual MS
@@ -20,6 +20,7 @@
 #include <GuiTreeView.au3>
 #include <GuiComboBox.au3>
 #include <GuiToolbar.au3>
+#include <GuiEdit.au3>
 
 #include <MsgBoxConstants.au3>
 #include <AutoItConstants.au3>
@@ -483,6 +484,7 @@ Func BuscarVariableGlobal($texto, $itemUltimo)
 	return $item
 EndFunc
 
+; Busca un texto dentro de un control
 Func BuscarTexto($tecla)
 	Local $ventana = WinGetTitle("")
 	Debug("Ventana: " & $ventana)
@@ -492,11 +494,23 @@ Func BuscarTexto($tecla)
 	Else
 		$texto = InputBox( "Buscar:", "Texto a buscar: ", $textoUltimo, "", -1, -1, Default, Default, 0, WinGetHandle("[ACTIVE]"))
 		$textoUltimo = $texto
+		$AuxNum=0
 		__HK_KeyUp($VK_F)
 	EndIf
 	Debug("Buscando: " & $texto)
 
 	Select
+		Case ($ventana = "Asistente para edición de fórmulas")
+			; Busca textos dentro de un texto
+			$textoControl = ControlGetText("", "", "Edit1")
+			$posInicio = StringInStr($textoControl, $texto, 0, 1, $AuxNum+1)
+
+			If($posInicio>0) Then
+				$AuxNum=$posInicio ; Guardamos la posición para la siguiente búsqueda
+			EndIf
+
+			$hEdit = ControlGetHandle("","","Edit1")
+			_GUICtrlEdit_SetSel($hEdit, $posInicio-1, $posInicio + StringLen($texto)-1)
 		Case ($ventana = "Asistente de funciones proceso")
 			ContinueCase
 		Case ($ventana = "Lista de Variables: GLOBALES")
